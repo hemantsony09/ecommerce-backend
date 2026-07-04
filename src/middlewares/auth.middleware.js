@@ -12,12 +12,11 @@ export const authMiddleware = (req,res,next)=>{
          return next()
     }
     const token = tokenHeader.split(' ')[1]
-try{
+   
+
     const decodedToken = jwt.verify(token,process.env.JWT_SECRET_KEY)
-}
-catch(err){
-     return res.status(401).json({error:"token is expired or invelid"}) 
-}
+
+
 if(decodedToken.role=='admin'){
     res.status(200).json
    } 
