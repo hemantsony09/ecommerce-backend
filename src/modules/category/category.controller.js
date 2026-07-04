@@ -155,10 +155,7 @@ export const deleteCategoryById = async (req, res) => {
         if (!deletedCategory) {
             return res.status(404).json({ error: 'catogery not found' })
         }
-        return res.status(200).json({
-            success: true,
-            message: "Category deleted successfully",
-        });
+        return res.status(204).json({ status: "success" })
 
     }
     catch (error) {
