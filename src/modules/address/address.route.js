@@ -1,12 +1,16 @@
 import express from 'express'
-import {authMiddleware} from '../../middlewares/auth.middleware'
+import {authMiddleware} from '../../middlewares/auth.middleware.js'
+import {getAddressById,getAllAddress,updateAddress,deleteAddressById,createAddress } from './address.controller.js'
+
 
 const addressRoute = express.Router()
 
-addressRoute.get('/',authMiddleware,)
-addressRoute.get('/:id',authMiddleware,)
+addressRoute.get('/',authMiddleware,getAllAddress)
+addressRoute.get('/:id',authMiddleware,getAddressById)
 
-addressRoute.post('/',authMiddleware,)
-addressRoute.patch('/:id',authMiddleware,)
+addressRoute.post('/',authMiddleware,createAddress)
+addressRoute.patch('/:id',authMiddleware,updateAddress)
 
-addressRoute.delete('/:id',authMiddleware,)
+addressRoute.delete('/:id',authMiddleware,deleteAddressById)
+
+export default addressRoute;

@@ -3,6 +3,8 @@ import 'dotenv/config'
 import authRoute from './src/modules/auth/auth.routes.js'
 import categoryRoute from './src/modules/category/category.routes.js'
 import productRoute from './src/modules/product/product.routes.js'
+import  addressRoute from './src/modules/address/address.route.js'
+import cartRoute from './src/modules/cart/cart.route.js'
 const app = express()
 const port = process.env.PORT || 8000
 
@@ -13,6 +15,8 @@ app.use(express.json())
 app.use('/auth',authRoute)
 app.use('/categories',categoryRoute)
 app.use('/product',productRoute)
+app.use('/address',addressRoute)
+app.use('/cart',cartRoute)
 
 app.get('/health',(req,res)=>{
     return res.json("server is running fine");
