@@ -17,9 +17,7 @@ export const authMiddleware = (req,res,next)=>{
     const decodedToken = jwt.verify(token,process.env.JWT_SECRET_KEY)
 
 
-if(decodedToken.role=='admin'){
-    res.status(200).json
-   } 
+
     req.user = decodedToken
     return next()
 }
