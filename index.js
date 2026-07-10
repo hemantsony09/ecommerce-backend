@@ -6,12 +6,17 @@ import productRoute from './src/modules/product/product.routes.js'
 import  addressRoute from './src/modules/address/address.route.js'
 import cartRoute from './src/modules/cart/cart.route.js'
 import orderRoute from './src/modules/order/order.route.js'
+import uploadRoute from './src/modules/upload/upload.route.js'
 import wishlistRoute from './src/modules/wishlist/wishlist.route.js'
+
+
+
 const app = express()
+
 const port = process.env.PORT || 8000
 
 
-
+app.use("/upload", uploadRoute);
 app.use(express.json())
 
 app.use('/auth',authRoute)
