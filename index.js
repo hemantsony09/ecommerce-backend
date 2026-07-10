@@ -6,6 +6,7 @@ import productRoute from './src/modules/product/product.routes.js'
 import  addressRoute from './src/modules/address/address.route.js'
 import cartRoute from './src/modules/cart/cart.route.js'
 import orderRoute from './src/modules/order/order.route.js'
+import wishlistRoute from './src/modules/wishlist/wishlist.route.js'
 const app = express()
 const port = process.env.PORT || 8000
 
@@ -19,6 +20,7 @@ app.use('/product',productRoute)
 app.use('/address',addressRoute)
 app.use('/cart',cartRoute)
 app.use('/orders',orderRoute)
+app.use('/wishlist',wishlistRoute)
 
 app.get('/health',(req,res)=>{
     return res.json("server is running fine");
