@@ -1,23 +1,31 @@
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
-export const authMiddleware = (req,res,next)=>{
+export const authMiddleware = (req, res, next) => {
     const tokenHeader = req.headers.authorization
-    
-    if(!tokenHeader){
-       return next();
+
+    if (!tokenHeader) {
+        return res.status(401).json({   success:false,error: "missing token" })
     }
-    if(!(tokenHeader.startsWith('Bearer '))){
-         res.status(401).json({error:"authorization header must start with Bearer"}) 
-         return next()
+    if (!(tokenHeader.startsWith('Bearer '))) {
+        return res.status(401).json({  success:false, error: "authorization header must start with Bearer" })
+
     }
     const token = tokenHeader.split(' ')[1]
-   
 
-    const decodedToken = jwt.verify(token,process.env.JWT_SECRET_KEY)
+    try {
+        const decodedToken = jwt.verify(
+            token,
+            process.env.JWT_SECRET_KEY
+        );
 
+        req.user = decodedToken;
 
-
-    req.user = decodedToken
-    return next()
+        return next();
+    } catch (error) {
+        return res.status(401).json({
+            success: false,
+            error: "Invalid or expired token",
+        });
+    }
 }
