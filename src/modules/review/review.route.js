@@ -4,7 +4,7 @@ import { postReview, updateReview, getReview, deleteReview } from './review.cont
 const reviewsRoute = express.Router()
 
 reviewsRoute.get('/:product_id/reviews', getReview)
-reviewsRoute.post('/reviews', authMiddleware, postReview)
+reviewsRoute.post('/', authMiddleware, postReview)
 reviewsRoute.patch('/:reviewId', authMiddleware, updateReview)
 reviewsRoute.delete('/:reviewId', authMiddleware, deleteReview)
 

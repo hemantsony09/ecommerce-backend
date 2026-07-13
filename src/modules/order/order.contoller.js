@@ -171,7 +171,7 @@ export const placeOrder = async (req, res) => {
             total += Number(product.price) * item.quantity;
         }
 
-        // Create Order
+
         const [order] = await db
             .insert(ordersTable)
             .values({
@@ -185,43 +185,47 @@ export const placeOrder = async (req, res) => {
                 id: ordersTable.id,
             });
 
-        // Create Order Items
-        for (const item of cartItems) {
+    
+        await db.transaction(async(tx)=>{
 
-            const [product] = await db
+            for (const item of cartItems) {
+                
+                const [product] = await tx
                 .select({
                     price: productsTable.price,
                 })
                 .from(productsTable)
                 .where(eq(productsTable.id, item.product_id));
-
-            await db.insert(orderItemsTable).values({
-                order_id: order.id,
-                product_id: item.product_id,
-                quantity: item.quantity,
-                price: product.price,
-            });
-        }
-
-        // Reduce Stock
+                
+                await tx.insert(orderItemsTable).values({
+                    order_id: order.id,
+                    product_id: item.product_id,
+                    quantity: item.quantity,
+                    price: product.price,
+                });
+            }
+            
+        })
+        
+        await db.transaction(async(tx)=>{
         for (const item of cartItems) {
-
-            const [product] = await db
-                .select({
-                    stock: productsTable.stock,
-                })
-                .from(productsTable)
-                .where(eq(productsTable.id, item.product_id));
-
-            await db
-                .update(productsTable)
-                .set({
-                    stock: product.stock - item.quantity,
-                })
-                .where(eq(productsTable.id, item.product_id));
+ 
+            const [product] = await tx
+            .select({
+                stock: productsTable.stock,
+            })
+            .from(productsTable)
+            .where(eq(productsTable.id, item.product_id));
+            
+            await tx
+            .update(productsTable)
+            .set({
+                stock: product.stock - item.quantity,
+            })
+            .where(eq(productsTable.id, item.product_id));
         }
+    })
 
-        // Clear Cart
         await db
             .delete(cartItemsTable)
             .where(eq(cartItemsTable.cart_id, cart.id));

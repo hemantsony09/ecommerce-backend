@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import 'dotenv/config'
+import { env } from '../config/env.js'
 
 export const authMiddleware = (req, res, next) => {
     const tokenHeader = req.headers.authorization
@@ -16,7 +16,7 @@ export const authMiddleware = (req, res, next) => {
     try {
         const decodedToken = jwt.verify(
             token,
-            process.env.JWT_SECRET_KEY
+            env.JWT_SECRET_KEY
         );
 
         req.user = decodedToken;

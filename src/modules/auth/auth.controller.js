@@ -3,7 +3,7 @@ import { usersTable } from '../../db/schema/schema.js'
 import { eq } from "drizzle-orm"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import 'dotenv/config'
+import { env } from '../../config/env.js'
 
 export const login = async (req, res) => {
     const { email, password } = req.body
@@ -25,7 +25,7 @@ try{
         email: user.email,
         role: user.role
     }
-    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+    const token = jwt.sign(payload, env.JWT_SECRET_KEY, {
         expiresIn: '7d',
     })
     return res.status(200).json({ status: "success", token: token })

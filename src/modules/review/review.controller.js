@@ -59,7 +59,7 @@ export const getReview = async (req, res) => {
         return res.status(200).json({ success: true, data: productReview })
     }
     catch (error) {
-        return res.status(500).json({ success: false, message: 'internal server error' })
+        return res.status(500).json({ success: false, message: 'internal server er  or' })
 
     }
 
